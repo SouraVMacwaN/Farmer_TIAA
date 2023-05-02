@@ -16,6 +16,13 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('create/', views.create_auction, name='create'),
     path('active/', views.active, name='active'),
+    path('buy/', views.buy, name='buy'),
+    path('cart/', views.cart, name='cart'),
+    path('checkout/', views.checkout, name='checkout'),
+    path('update_item/', views.updateItem, name='update_item'),
+    path('process_order/', views.processorder, name='process_order'),
+    
+    
     # path('active/<str:category_name>', views.active, name='active'),
 
     path('watchlist/', views.watchlist, name='watchlist'),
