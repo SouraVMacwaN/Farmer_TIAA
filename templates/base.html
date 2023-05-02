@@ -37,41 +37,57 @@ var csrftoken = getToken('csrftoken')
 
 
     </script>
+    <style>
+        .sidebar-header img{
+            width: 75%;
+        }
+        #cart-btn{
+            display: flex;
+        }
+        #logo{
+            margin-left: 5%;
+            margin-top: 5%;
+        }
+
+    </style>
     <title></title>
 </head>
 <body>
     <div class="wrapper">
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>Fresh Mart</h3>
+                <img id="logo" src="{% static  'images/logo.png' %}">
+                <!-- <h3>Fresh Mart</h3> -->
             </div>
     
-            <ul class="list-unstyled components">
+            <ul class="list-unstyled components text-dark ">
                 <li>
-                    <a href="{% url  'index' %}"><i class="far fa-chart-area"></i> Dashboard</a>
+                    <a href="{% url  'index' %}"style="color: #000;" ><i class="far fa-chart-area  "></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="{% url 'active' %}"><i class="fa fa-list"></i> Ongoing Bidding</a>
+                    <a href="{% url 'active' %}" style="color: #000;"><i class="fa fa-list text-dark"></i> Ongoing Bidding</a>
                 </li>
                 <li>
-                    <a href="{% url 'create' %}"><i class="far fa-plus"></i> Create Bid</a>
+                    <a href="{% url 'create' %}" style="color: #000;"><i class="far fa-plus text-dark"></i> Create Bid</a>
                 </li>
                 <li>
-                    <a href="{% url  'buy' %}"><i class="far fa-plus"></i> Buying</a>
+                    <a href="{% url  'buy' %}" style="color: #000;"><i class="far fa-plus text-dark"></i> Buying</a>
                 </li>
                 <li>
-                    <a href="{% url  'cart' %}"><i class="far fa-list"></i> Cart</a>
-                    <p id = "cart-total">{{cartItems}}</p>
+                    <div class="cart">
+                        <a href="{% url  'cart' %} " style="color: #000;" id="cart-btn"><img src='{% static "images/cart.png" %}' height="20px"> Cart ({{order.get_cart_items}}) </a>
+                        
+                    </div>
                 </li>
                 <li>
-                    <a href="{% url 'watchlist' %}"><i class="far fa-eye"></i> Watch List</a>
+                    <a href="{% url 'watchlist' %}" style="color: #000;"><i class="far fa-eye"></i> Watch List</a>
                 </li>
                 <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fal fa-folder-open"></i> Categories</a>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle text-dark"><i class="fal fa-folder-open"></i> Categories</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         {% for cat in categories %}
                         <li>
-                            <a href="{% url 'category_detail' cat.category_name %}">
+                            <a href="{% url 'category_detail' cat.category_name %}" style="color: #000;">
                                 {{cat.category_name}}
                                 <span class='badge-custom'>
                                     {{ cat.count_active_auctions }}
@@ -82,10 +98,10 @@ var csrftoken = getToken('csrftoken')
                     </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="far fa-comment-alt"></i> Messages</a>
+                    <a href="#" style="color: #000;"><i class="far fa-comment-alt" ></i> Messages</a>
                 </li>
                 <li>
-                    <a href="#"><i class="far fa-bell"></i> Notifications</a>
+                    <a href="#" style="color: #000;"><i class="far fa-bell"></i> Notifications</a>
                 </li>
             </ul>
             <ul class="list-unstyled CTAs">
@@ -105,7 +121,7 @@ var csrftoken = getToken('csrftoken')
         </nav>
 
         <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="navbar navbar-expand-lg navbar-light ">
                 <div class="container-fluid">
     
                     <button type="button" id="sidebarCollapse" class="btn btn-dark">

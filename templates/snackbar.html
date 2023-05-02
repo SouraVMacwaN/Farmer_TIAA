@@ -1,0 +1,25 @@
+<!-- Add a button to show the snackbar -->
+<button type="button" class="btn btn-primary" onclick="showSnackbar()">Complete Transaction</button>
+
+<!-- The snackbar -->
+<div id="snackbar">Transaction complete</div>
+
+<!-- Include the required Bootstrap and JavaScript files -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- JavaScript function to show the snackbar -->
+<script>
+function showSnackbar() {
+  // Get the snackbar element
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to the snackbar
+  x.className = "show";
+
+  // After 3 seconds, remove the show class from the snackbar
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+</script>

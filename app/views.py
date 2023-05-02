@@ -34,7 +34,8 @@ def register(request):
         user_form = UserRegistrationForm()
     return render(request,
                   'account/register.html',
-                  {'user_form': user_form})
+                  {'user_form': user_form,
+                   })
 
 def user_login(request):
     if request.method == 'POST':
@@ -59,6 +60,17 @@ def logout_view(request):
     return HttpResponseRedirect(reverse('index'))
 
 def index(request):
+
+    if request.user.is_authenticated: 
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer, complete=False) 
+        items = order.orderitem_set.all() 
+        cartItems = order.get_cart_items
+    else: 
+        items = [] 
+        order = {'get_cart_total':0 , 'get_cart_items':0}
+        cartItems = order['get_cart_items']
+
     auctions = Auction.objects.all().order_by('-date_created')
     expensive_auctions = Auction.objects.order_by('-starting_bid')[:4]
     for auction in auctions:
@@ -82,10 +94,22 @@ def index(request):
         'users_count': User.objects.all().count(),
         'pages': pages,
         'title': 'Dashboard',
+        'order':order,
     })
 
 @login_required
 def create_auction(request):
+
+    if request.user.is_authenticated: 
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer, complete=False) 
+        items = order.orderitem_set.all() 
+        cartItems = order.get_cart_items
+    else: 
+        items = [] 
+        order = {'get_cart_total':0 , 'get_cart_items':0}
+        cartItems = order['get_cart_items']
+
     ImageFormSet = forms.modelformset_factory(Image, form = ImageForm)
     if request.method == 'POST':
         auction_form = AuctionForm(request.POST, request.FILES)
@@ -108,7 +132,8 @@ def create_auction(request):
                 'auction_form':AuctionForm(),
                 'image_form': ImageFormSet(queryset=Image.objects.none()),
                 'title': 'Create Auction',
-                'success': True
+                'success': True,
+                'order':order,
             })
 
         else:
@@ -116,18 +141,31 @@ def create_auction(request):
                 'categories':Category.objects.all(),
                 'auction_form': AuctionForm(),
                 'image_form':ImageFormSet(queryset=Image.objects.none()),
-                'title':'Create Auction'
+                'title':'Create Auction',
+                'order':order,
             })
     else:
         return render(request, 'create_auction.html', {
                 'categories':Category.objects.all(),
                 'auction_form': AuctionForm(),
                 'image_form':ImageFormSet(queryset=Image.objects.none()),
-                'title':'Create Auction'
+                'title':'Create Auction',
+                'order':order,
             })
 
 
 def active (request):
+
+    if request.user.is_authenticated: 
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer, complete=False) 
+        items = order.orderitem_set.all() 
+        cartItems = order.get_cart_items
+    else: 
+        items = [] 
+        order = {'get_cart_total':0 , 'get_cart_items':0}
+        cartItems = order['get_cart_items']
+
     '''
     It renders a page that displays all of 
     the currently active auction listings
@@ -161,11 +199,23 @@ def active (request):
         'auctions': auctions,
         'auctions_count': auctions.count(),
         'pages': pages,
-        'title': 'Active Auctions'
+        'title': 'Active Auctions',
+        'order':order,
     })
 
 @login_required
 def watchlist(request):
+
+    if request.user.is_authenticated: 
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer, complete=False) 
+        items = order.orderitem_set.all() 
+        cartItems = order.get_cart_items
+    else: 
+        items = [] 
+        order = {'get_cart_total':0 , 'get_cart_items':0}
+        cartItems = order['get_cart_items']
+
 
     #displays all auctions that they have added on their watchlist
 
@@ -193,11 +243,13 @@ def watchlist(request):
         'auctions':auctions,
         'auctions_count':auctions.count(),
         'pages':pages,
-        'title':'Watchlist'
+        'title':'Watchlist',
+        'order':order,
     })
 
 @login_required
 def watchlist_edit(request, auction_id, reverse_method):
+
 
     #allows users to add/remove items to/from watchlist
 
@@ -214,6 +266,16 @@ def watchlist_edit(request, auction_id, reverse_method):
         return HttpResponseRedirect(reverse(reverse_method))
 
 def auction_detail(request, auction_id):
+
+    if request.user.is_authenticated: 
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer, complete=False) 
+        items = order.orderitem_set.all() 
+        cartItems = order.get_cart_items
+    else: 
+        items = [] 
+        order = {'get_cart_total':0 , 'get_cart_items':0}
+        cartItems = order['get_cart_items']
 
     #displays the content of an auction
 
@@ -235,11 +297,22 @@ def auction_detail(request, auction_id):
         'bid_form': BidForm(),
         'comments': auction.get_comments.all(),
         'comment_form':CommentForm(),
-        'title':'Auction'
+        'title':'Auction',
+        'order':order,
     })
 
 @login_required
 def bid(request, auction_id):
+
+    if request.user.is_authenticated: 
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer, complete=False) 
+        items = order.orderitem_set.all() 
+        cartItems = order.get_cart_items
+    else: 
+        items = [] 
+        order = {'get_cart_total':0 , 'get_cart_items':0}
+        cartItems = order['get_cart_items']
 
     #allows users to bid
 
@@ -266,6 +339,7 @@ def bid(request, auction_id):
             'form':BidForm(),
             'error_min_value':True,
             'title':'Auction',
+            'order':order,
         })
 
 def auction_close(request, auction_id):
@@ -289,6 +363,16 @@ def auction_close(request, auction_id):
 def comment(request, auction_id):
     #allows users to add comment 
 
+    if request.user.is_authenticated: 
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer, complete=False) 
+        items = order.orderitem_set.all() 
+        cartItems = order.get_cart_items
+    else: 
+        items = [] 
+        order = {'get_cart_total':0 , 'get_cart_items':0}
+        cartItems = order['get_cart_items']
+
     auction = Auction.objects.get(id=auction_id)
     form = CommentForm(request.POST)
     new_comment = form.save(commit=False)
@@ -300,6 +384,16 @@ def comment(request, auction_id):
 
 def category_detail(request, category_name):
     #displays products of the same category
+
+    if request.user.is_authenticated: 
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer, complete=False) 
+        items = order.orderitem_set.all() 
+        cartItems = order.get_cart_items
+    else: 
+        items = [] 
+        order = {'get_cart_total':0 , 'get_cart_items':0}
+        cartItems = order['get_cart_items']
 
     category = Category.objects.get(category_name=category_name)
     auctions = Auction.objects.filter(category=category)
@@ -325,8 +419,20 @@ def category_detail(request, category_name):
     })
 
 def buy(request):
+
+    if request.user.is_authenticated: 
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer, complete=False) 
+        items = order.orderitem_set.all() 
+        cartItems = order.get_cart_items
+    else: 
+        items = [] 
+        order = {'get_cart_total':0 , 'get_cart_items':0}
+        cartItems = order['get_cart_items']
+
+    
     products = Product.objects.all()
-    context = {'products':products}
+    context = {'products':products, "order":order,'categories': Category.objects.all(),}
     return render(request,'buy.html',context)
 
 
@@ -341,7 +447,7 @@ def cart(request):
         order = {'get_cart_total':0 , 'get_cart_items':0}
         cartItems = order['get_cart_items']
         
-    context = {'items':items,'order':order,'cartItems':cartItems , 'shipping':False} 
+    context = {'items':items,'order':order,'cartItems':cartItems , 'shipping':False,'categories': Category.objects.all(),} 
     return render(request,'cart.html',context)
 
 def checkout(request): 
@@ -354,7 +460,7 @@ def checkout(request):
         items = [] 
         order = {'get_cart_total':0 , 'get_cart_items':0}
         cartItems = order['get_cart_items']
-    context = {'items':items,'order':order,'cartItems':cartItems , 'shipping':False} 
+    context = {'items':items,'order':order,'cartItems':cartItems , 'shipping':False,'categories': Category.objects.all(),} 
     return render(request,'checkout.html',context)
 
 def updateItem(request):
