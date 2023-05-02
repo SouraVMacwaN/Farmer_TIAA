@@ -5,10 +5,11 @@ from django.utils import timezone
 
 # Create your models here.
 class User(AbstractUser):
+    is_farmer = models.BooleanField(default=False)
 
-    pass 
     def __str__(self):
         return f'{self.username}'
+
 class Category(models.Model):
     category_name = models.CharField(max_length=50)
 

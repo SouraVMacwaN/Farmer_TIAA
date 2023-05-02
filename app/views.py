@@ -24,6 +24,7 @@ def register(request):
             # Set the chosen password
             new_user.set_password(
                 user_form.cleaned_data['password'])
+            new_user.is_farmer = user_form.cleaned_data['user_type'] == 'farmer'
             # Save the User object
             new_user.save()
             # Create the user profile

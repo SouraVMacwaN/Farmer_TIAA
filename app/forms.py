@@ -15,11 +15,19 @@ class UserRegistrationForm(forms.ModelForm):
         model = User
         fields = ('first_name', 'last_name', 'username', 'email')
 
+    USER_TYPE_CHOICES = (
+            ('customer', 'Customer'),
+            ('farmer', 'Farmer'),
+        )
+
+    user_type = forms.ChoiceField(choices=USER_TYPE_CHOICES, widget=forms.RadioSelect)
+
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
             raise forms.ValidationError("Passwords don't match.")
         return cd['password2']
+    
 class AuctionForm(forms.ModelForm):
 
     class Meta:
